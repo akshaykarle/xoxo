@@ -13,7 +13,7 @@
 }:
 
 buildGoApplication {
-  pname = "ttt";
+  pname = "xoxo";
   version = "0.1";
   pwd = ./.;
   src = ./.;

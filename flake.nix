@@ -1,5 +1,5 @@
 {
-  description = "A basic gomod2nix flake";
+  description = "XOXO: A basic tic-tac-toe player";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05-small";
   inputs.flake-utils.url = "github:numtide/flake-utils";
@@ -28,11 +28,11 @@
           inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
         };
         packages.dockerImage = pkgs.dockerTools.buildLayeredImage {
-          name = "ttt";
+          name = "xoxo";
           tag = "latest";
           created = "now";
           config.Entrypoint = [
-            "${callPackage ./. { inherit (gomod2nix.legacyPackages.${system}) buildGoApplication; }}/bin/ttt"
+            "${callPackage ./. { inherit (gomod2nix.legacyPackages.${system}) buildGoApplication; }}/bin/xoxo"
           ];
         };
 
