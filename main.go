@@ -336,9 +336,10 @@ func main() {
 			}
 
 		case line == "identify":
-			fmt.Println("identify name optimized-tictactoe")
-			fmt.Println("identify author chat-assistant")
+			fmt.Println("identify name ttt")
+			fmt.Println("identify author akshaykarle")
 			fmt.Println("identify version 2.0.0")
+			fmt.Println("identify url https://github.com/akshaykarle/ttt")
 			fmt.Println("identify ok")
 
 		case strings.HasPrefix(line, "move"):
