@@ -354,7 +354,8 @@ func main() {
 			game = NewGame(boardSize, winLength)
 
 			if err := game.parseBoardState(boardState); err != nil {
-				fmt.Println("Error when parsing board: ", err)
+				fmt.Println("Error when parsing board: ", err, ". Board parsed so far:")
+				fmt.Println(game.printBoard())
 				continue
 			}
 
