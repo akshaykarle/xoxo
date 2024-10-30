@@ -1,11 +1,15 @@
 {
   description = "XOXO: A basic tic-tac-toe player";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05-small";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.gomod2nix.url = "github:nix-community/gomod2nix";
-  inputs.gomod2nix.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.gomod2nix.inputs.flake-utils.follows = "flake-utils";
+  inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05-small";
+    gomod2nix = {
+      url = "github:nix-community/gomod2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+  };
 
   outputs =
     {
@@ -22,17 +26,23 @@
         # The current default sdk for macOS fails to compile go projects, so we use a newer one for now.
         # This has no effect on other platforms.
         callPackage = pkgs.darwin.apple_sdk_11_0.callPackage or pkgs.callPackage;
-      in
-      {
-        packages.default = callPackage ./. {
+        myapp = callPackage ./. {
           inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
         };
+      in
+      {
+        apps.default = {
+          type = "app";
+          program = "${myapp}/bin/xoxo";
+        };
+
+        packages.default = myapp;
         packages.dockerImage = pkgs.dockerTools.buildLayeredImage {
           name = "xoxo";
           tag = "latest";
           created = "now";
           config.Entrypoint = [
-            "${callPackage ./. { inherit (gomod2nix.legacyPackages.${system}) buildGoApplication; }}/bin/xoxo"
+            "${myapp}/bin/xoxo"
           ];
         };
 
