@@ -84,35 +84,6 @@ func NewGame(boardSize, winLength int) *Game {
 	}
 }
 
-// Parse a position like "a1" or "aa15"
-func parsePosition(pos string, boardSize int) (row, col int, err error) {
-	if len(pos) < 2 {
-		return 0, 0, fmt.Errorf("invalid position")
-	}
-
-	// Parse column
-	colPart := strings.ToLower(pos[:len(pos)-1])
-	if len(colPart) == 1 {
-		col = int(colPart[0] - 'a')
-	} else if len(colPart) == 2 {
-		col = (int(colPart[0]-'a'+1) * 26) + int(colPart[1]-'a')
-	}
-
-	// Parse row (1-based to 0-based)
-	rowStr := pos[len(colPart):]
-	rowNum, err := strconv.Atoi(rowStr)
-	if err != nil {
-		return 0, 0, fmt.Errorf("invalid row number")
-	}
-	row = rowNum - 1
-
-	if row < 0 || row >= boardSize || col < 0 || col >= boardSize {
-		return 0, 0, fmt.Errorf("position out of bounds")
-	}
-
-	return row, col, nil
-}
-
 // Print the board in a readable format
 func (g *Game) printBoard() string {
 	var sb strings.Builder
